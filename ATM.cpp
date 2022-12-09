@@ -14,10 +14,10 @@ ATM::ATM(ifstream ATMFile)
         operations.push_back(currentOperation);
         command.clear();
     }
-    pthread_create(&(thread), NULL, RunATM, NULL);
+    pthread_create(&(thread), NULL, (THREADFUNCPTR) &ATM::RunATM, this);
 }
 
-void ATM::RunATM()
+void* ATM::RunATM()
 {
     for (size_t currentOperationIndex = 0; currentOperationIndex < operations.size(); currentOperationIndex++)
     {

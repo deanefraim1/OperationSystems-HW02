@@ -2,10 +2,10 @@
 
 Bank::Bank()
 {
-    pthread_create(&thread, NULL, RunBank, NULL);
+    pthread_create(&thread, NULL, (THREADFUNCPTR) &Bank::RunBank, this);
 }
 
-void Bank::RunBank()
+void *Bank::RunBank()
 {
-
+    
 }

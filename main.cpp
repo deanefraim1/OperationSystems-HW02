@@ -29,5 +29,6 @@ int main(int argc, char* argv[])
         ifstream currentATMFile(argv[currentATMIndex], ios::in|ios::binary);
         ATMs.push_back(ATM(currentATMFile));
     }
+
     
 }

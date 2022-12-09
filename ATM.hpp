@@ -10,6 +10,7 @@
 
 using namespace std;
 
+typedef void * (*THREADFUNCPTR)(void *);
 class ATM
 {
 public:
@@ -19,7 +20,7 @@ public:
     pthread_t thread;
 
     ATM(ifstream ATMFile);
-    void RunATM();
+    void *RunATM();
     void RunOperation(int operationIndex);
 };
 
