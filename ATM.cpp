@@ -5,7 +5,7 @@
 extern Bank *bank;
 
 using namespace std;
-ATM::ATM(ifstream ATMFile)
+ATM::ATM(ifstream& ATMFile)
 {
     string command;
     while(getline(ATMFile, command))
@@ -33,10 +33,9 @@ void ATM::RunOperation(int operationIndex)
         {
             if(bank->accounts[currentAccount].id == operations[operationIndex].accountID)
             {
-                
+                //account already exists
             }
         }
-        
         bank->accounts.push_back(Account(operations[operationIndex].amount,
                                          operations[operationIndex].accountID,
                                          operations[operationIndex].password));
