@@ -6,8 +6,6 @@
 
 using namespace std;
 
-typedef void * (*THREADFUNCPTR)(void *);
-
 class Bank
 {
 public:
@@ -16,7 +14,8 @@ public:
     pthread_t thread;
 
     Bank();
-    void *RunBank();
+    static void *RunBank(void *bankToRunAsVoid);
+    void TakeCommissions();
 };
 
 #endif

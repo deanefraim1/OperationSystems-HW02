@@ -21,14 +21,18 @@ LogManager *logManager;
 
 int main(int argc, char* argv[])
 {
-    // init bank
+    bank = new Bank();
     logManager = new LogManager("log.txt");
     vector<ATM> ATMs;
     for (int currentATMIndex = 1; currentATMIndex < argc; currentATMIndex++)
     {
-        ifstream currentATMFile(argv[currentATMIndex], ios::in|ios::binary);
+        ifstream currentATMFile(argv[currentATMIndex], ios::in);
         ATMs.push_back(ATM(currentATMFile));
     }
-
-    
+    pthread_join(bank->thread, NULL);
+    for (size_t currentATMIndex = 0; currentATMIndex < ATMs.size(); currentATMIndex++)
+    {
+        pthread_join(ATMs[currentATMIndex].thread, NULL);
+    }
+    return 0;
 }
