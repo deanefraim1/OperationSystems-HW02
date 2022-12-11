@@ -19,7 +19,7 @@ public:
     int currentCommandIndex;
     pthread_t thread;
 
-    ATM(ifstream ATMFile);
+    ATM(ifstream& ATMFile);
     void *RunATM();
     void RunOperation(int operationIndex);
 };
