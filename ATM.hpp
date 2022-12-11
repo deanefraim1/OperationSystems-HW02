@@ -18,10 +18,12 @@ public:
     vector<Operation> operations;
     int currentCommandIndex;
     pthread_t thread;
+    int id;
 
     ATM(ifstream& ATMFile);
-    void *RunATM();
+    static void *RunATM(void *ATMToRunAsVoid);
     void RunOperation(int operationIndex);
+    void AddAccountToBank(Account accountToAdd);
 };
 
 #endif

@@ -9,7 +9,7 @@ using namespace std;
 class LogManager
 {
 public:
-    ifstream logFileStream;
+    ofstream logFileStream;
     pthread_mutex_t mutex;
 
     LogManager(string logFilePath);

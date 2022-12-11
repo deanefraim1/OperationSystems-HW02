@@ -27,7 +27,7 @@ Operation::Operation(string command)
     }
     this->operationType = operationType;
     this->accountID = accountID;
-    this->password = accountPassword;
+    this->accountPassword = accountPassword;
     this->amount = amount;
     this->targetAccountID = targetAccountID;
 }

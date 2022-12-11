@@ -10,7 +10,7 @@ class Operation
 public:
     string operationType;
     int accountID;
-    int password;
+    int accountPassword;
     int amount;
     int targetAccountID;
 
