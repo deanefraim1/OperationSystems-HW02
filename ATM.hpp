@@ -10,7 +10,7 @@
 
 using namespace std;
 
-typedef void * (*THREADFUNCPTR)(void *);//asdasd
+typedef void * (*THREADFUNCPTR)(void *);
 class ATM
 {
 public:
