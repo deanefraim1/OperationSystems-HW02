@@ -13,6 +13,7 @@ public:
     pthread_mutex_t mutex;
 
     LogManager(string logFilePath);
+    ~LogManager();
     void PrintToLog(string massage);
 };
 

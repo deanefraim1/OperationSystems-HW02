@@ -8,7 +8,7 @@ using namespace std;
 class Operation
 {
 public:
-    string operationType;
+    string type;
     int accountID;
     int accountPassword;
     int amount;
