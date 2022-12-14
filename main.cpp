@@ -13,6 +13,7 @@
 #include "ATM.hpp"
 #include "Bank.hpp"
 #include "LogManager.hpp"
+#include "Helpers.hpp"
 
 using namespace std;
 
@@ -21,22 +22,17 @@ LogManager *logManager;
 
 int main(int argc, char* argv[])
 {
+    if(argc < 2)
+        Helpers::EndProgramWithSTDERR("Bank error: illegal arguments\n");
+    
     bank = new Bank();
     logManager = new LogManager("log.txt");
-    vector<ATM> ATMs;
+    vector<ATM> ATMs = Helpers::InitializeATMsVector(argc, argv);
 
-    for (int currentATMIndex = 1; currentATMIndex < argc; currentATMIndex++)
-    {
-        ifstream currentATMFile(argv[currentATMIndex], ios::in);
-        ATMs.push_back(ATM(currentATMFile));
-    }
+    Helpers::JoinAllThreads(ATMs);
 
-    pthread_join(bank->thread, NULL);
-
-    for (size_t currentATMIndex = 0; currentATMIndex < ATMs.size(); currentATMIndex++)
-    {
-        pthread_join(ATMs[currentATMIndex].thread, NULL);
-    }
+    delete logManager;
+    delete bank;
     
     return 0;
 }

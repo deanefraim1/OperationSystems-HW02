@@ -12,7 +12,8 @@ public:
     int password;
     pthread_mutex_t mutex;
 
-    Account(int initialBalance, int id, int password);
+    Account(int id, int password, int initialBalance);
+    ~Account();
 };
 
 #endif
