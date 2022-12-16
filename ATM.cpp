@@ -167,5 +167,5 @@ void ATM::BalanceInquiry(int accountID, int accountPassword)
 
 void ATM::CloseAccount(int accountID, int accountPassword)
 {
-
+    
 }
