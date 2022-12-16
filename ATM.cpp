@@ -3,8 +3,6 @@
 #include "LogManager.hpp"
 #include "Operation.hpp"
 
-#define MAX_ARG 5
-
 extern Bank *bank;
 extern LogManager *logManager;
 
@@ -25,7 +23,7 @@ ATM::ATM(ifstream& ATMFile)
 void* ATM::RunATM(void* ATMToRunAsVoid)
 {
     ATM *ATMToRun = (ATM*) ATMToRunAsVoid;
-    
+
     for (size_t currentOperationIndex = 0; currentOperationIndex < ATMToRun->operations.size(); currentOperationIndex++)
         ATMToRun->RunOperation(currentOperationIndex);
     
