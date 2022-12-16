@@ -14,7 +14,7 @@ public:
     static void EndProgramWithPERROR(string errorMessage);
     static void EndProgramWithSTDERR(string errorMessage);
     static vector<ATM> InitializeATMsVector(int argc, char* argv[]);
-    static void JoinAllThreads(vector<ATM> ATMs);
+    static void JoinAllATMsThreads(vector<ATM> ATMs);
 };
 
 #endif
