@@ -10,7 +10,6 @@
 
 using namespace std;
 
-typedef void * (*THREADFUNCPTR)(void *);
 class ATM
 {
 public:
@@ -23,7 +22,13 @@ public:
     ATM(ifstream& ATMFile);
     static void *RunATM(void *ATMToRunAsVoid);
     void RunOperation(int operationIndex);
-    void AddAccountToBank(Account accountToAdd);
+    void AddAccountToBank(int accountID, int accountPassword, int initialBalance);
+    void DepositToAccount(int accountID, int accountPassword, int amountToDeposit);
+    void WithdrawFromAccount(int accountID, int accountPassword, int amountToWithdraw);
+    void TransferBetweenAccounts(int accountID, int accountPassword, int accountIDToTransferTo, int amountToTransfer);
+    void BalanceInquiry(int accountID, int accountPassword);
+    void CloseAccount(int accountID, int accountPassword);
+
 };
 
 #endif

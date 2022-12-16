@@ -25,7 +25,7 @@ Operation::Operation(string command)
         targetAccountID = atoi(strtok(NULL, strdup(delimiters.c_str())));
         amount = atoi(strtok(NULL, strdup(delimiters.c_str())));
     }
-    this->operationType = operationType;
+    this->type = operationType;
     this->accountID = accountID;
     this->accountPassword = accountPassword;
     this->amount = amount;

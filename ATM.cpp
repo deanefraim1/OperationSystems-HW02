@@ -1,8 +1,7 @@
 #include "ATM.hpp"
 #include "Bank.hpp"
 #include "LogManager.hpp"
-
-#define MAX_ARG 5
+#include "Operation.hpp"
 
 extern Bank *bank;
 extern LogManager *logManager;
@@ -24,39 +23,52 @@ ATM::ATM(ifstream& ATMFile)
 void* ATM::RunATM(void* ATMToRunAsVoid)
 {
     ATM *ATMToRun = (ATM*) ATMToRunAsVoid;
+
     for (size_t currentOperationIndex = 0; currentOperationIndex < ATMToRun->operations.size(); currentOperationIndex++)
-    {
         ATMToRun->RunOperation(currentOperationIndex);
-    }
+    
     return NULL;
 }
 
 void ATM::RunOperation(int operationIndex)
 {
-    if(operations[operationIndex].operationType == "O")
-    {
-        Account accountToAdd = Account(operations[operationIndex].amount,
-                                       operations[operationIndex].accountID,
-                                       operations[operationIndex].accountPassword);
-        AddAccountToBank(accountToAdd);
-    }
-    else if(operations[operationIndex].operationType == "D")
-    {
-        
-    }
+    Operation operation = operations[operationIndex];
 
+    if(operation.type == "O")
+        AddAccountToBank(operation.accountID, operation.accountPassword, operation.amount);
+    
+    else if(operation.type == "D")
+        DepositToAccount(operation.accountID, operation.accountPassword, operation.amount);
+    
+    else if(operation.type == "W")
+        WithdrawFromAccount(operation.accountID, operation.accountPassword, operation.amount);
+    
+    else if(operation.type == "T")
+        TransferBetweenAccounts(operation.accountID, operation.accountPassword, operation.targetAccountID, operation.amount);
+    
+    else if(operation.type == "B")
+        BalanceInquiry(operation.accountID, operation.accountPassword);
+
+    else if(operation.type == "Q")
+        CloseAccount(operation.accountID, operation.accountPassword);
+    
+    else
+        logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - illegal command");
+    
 }
 
-void ATM::AddAccountToBank(Account accountToAdd)
+void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalance)
 {
     for (size_t currentAccount = 0; currentAccount < bank->accounts.size(); currentAccount++)
         {
-            if(bank->accounts[currentAccount].id == accountToAdd.id)
+            if(bank->accounts[currentAccount].id == accountID)
             {
                 logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account with the same id exists");
                 return;
             }
         }
+
+        Account accountToAdd(accountID, accountPassword, initialBalance);
         
         bank->accounts.push_back(accountToAdd);
         logManager->PrintToLog(to_string(this->id) + ": New account id is " + to_string(accountToAdd.id) + " with password " + to_string(accountToAdd.password) + " and initial balance " + to_string(accountToAdd.balance));
