@@ -10,7 +10,6 @@
 
 extern Bank *bank;
 extern LogManager *logManager;
-extern int numberOfATMsRunning;
 
 using namespace std;
 
@@ -33,8 +32,6 @@ ATM::~ATM()
 
 void* ATM::RunATM(void* ATMToRunAsVoid)
 {
-    numberOfATMsRunning++;
-
     ATM *ATMToRun = (ATM *)ATMToRunAsVoid;
 
     for (size_t currentOperationIndex = 0; currentOperationIndex < ATMToRun->operations.size(); currentOperationIndex++)
@@ -42,8 +39,6 @@ void* ATM::RunATM(void* ATMToRunAsVoid)
         ATMToRun->RunOperation(currentOperationIndex);
         usleep(100000);
     }
-
-    numberOfATMsRunning--;
 
     return NULL;
 }
@@ -72,7 +67,6 @@ void ATM::RunOperation(int operationIndex)
     
     else
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - illegal command");
-    
 }
 
 void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalance)

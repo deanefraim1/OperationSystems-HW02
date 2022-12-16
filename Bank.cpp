@@ -4,8 +4,6 @@
 #include <string>
 #include <unistd.h>
 
-extern int numberOfATMsRunning;
-
 Bank::Bank()
 {
     pthread_create(&thread, NULL, Bank::RunBank, this);
@@ -19,10 +17,9 @@ Bank::~Bank()
 void *Bank::RunBank(void *bankToRunAsVoid)
 {
     Bank *bankToRun = (Bank *) bankToRunAsVoid;
-    while(numberOfATMsRunning > 0)
+    while(sleep(3))
     {
         bankToRun->TakeCommissions();
-        sleep(3);
     }
     return NULL;
 }

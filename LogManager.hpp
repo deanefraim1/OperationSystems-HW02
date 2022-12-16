@@ -3,14 +3,14 @@
 
 #include <vector>
 #include <fstream>
+#include "IThreadSafe.hpp"
 
 using namespace std;
 
-class LogManager
+class LogManager : public IThreadSafe
 {
 public:
     ofstream logFileStream;
-    pthread_mutex_t mutex;
 
     LogManager(string logFilePath);
     ~LogManager();
