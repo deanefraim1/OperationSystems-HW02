@@ -4,6 +4,8 @@
 #include <string>
 #include <unistd.h>
 
+#define NOT_FOUND -1
+
 Bank::Bank()
 {
     pthread_create(&thread, NULL, Bank::RunBank, this);
@@ -26,6 +28,7 @@ void *Bank::RunBank(void *bankToRunAsVoid)
 
 void Bank::TakeCommissions()
 {
+    EnterWriter();
     int commissionInPrecentage;
     int amoutToTake;
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
@@ -35,4 +38,5 @@ void Bank::TakeCommissions()
         accounts[currentAccount].balance -= amoutToTake;
         this->balance += amoutToTake;
     }
+    ExitWriter();
 }

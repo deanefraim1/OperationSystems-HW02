@@ -5,6 +5,8 @@
 #include "Account.hpp"
 #include "IThreadSafe.hpp"
 
+#define NOT_FOUND -1
+
 using namespace std;
 
 class Bank : public IThreadSafe
