@@ -3,10 +3,11 @@
 
 #include <vector>
 #include "Account.hpp"
+#include "IThreadSafe.hpp"
 
 using namespace std;
 
-class Bank
+class Bank : public IThreadSafe
 {
 public:
     int balance;
@@ -14,6 +15,7 @@ public:
     pthread_t thread;
 
     Bank();
+    ~Bank();
     static void *RunBank(void *bankToRunAsVoid);
     void TakeCommissions();
 };

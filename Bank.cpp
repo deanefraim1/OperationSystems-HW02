@@ -1,19 +1,28 @@
 #include "Bank.hpp"
 #include "LogManager.hpp"
+#include "ATM.hpp"
 #include <string>
 #include <unistd.h>
+
+extern int numberOfATMsRunning;
 
 Bank::Bank()
 {
     pthread_create(&thread, NULL, Bank::RunBank, this);
 }
 
+Bank::~Bank()
+{
+    pthread_exit(NULL);
+}
+
 void *Bank::RunBank(void *bankToRunAsVoid)
 {
     Bank *bankToRun = (Bank *) bankToRunAsVoid;
-    while(sleep(3))
+    while(numberOfATMsRunning > 0)
     {
         bankToRun->TakeCommissions();
+        sleep(3);
     }
     return NULL;
 }

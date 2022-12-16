@@ -20,6 +20,7 @@ public:
     int id;
 
     ATM(ifstream& ATMFile);
+    ~ATM();
     static void *RunATM(void *ATMToRunAsVoid);
     void RunOperation(int operationIndex);
     void AddAccountToBank(int accountID, int accountPassword, int initialBalance);
