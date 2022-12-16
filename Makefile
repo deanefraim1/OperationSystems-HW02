@@ -2,7 +2,7 @@
 CXX = g++
 CXXFLAGS = -g -Wall -std=c++11
 CXXLINK = $(CXX)
-OBJS = main.o Bank.o ATM.o LogManager.o Account.o Operation.o Helpers.o
+OBJS = main.o Bank.o ATM.o LogManager.o Account.o Operation.o Helpers.o IThreadSafe.o
 TARGET = bank
 RM = rm -f
 # Creating the  executable
@@ -16,6 +16,7 @@ LogManager.o: LogManager.cpp LogManager.hpp
 Account.o: Account.cpp Account.hpp
 Operation.o: Operation.cpp Operation.hpp
 Helpers.o: Helpers.cpp Helpers.hpp
+IThreadSafe.o: IThreadSafe.cpp IThreadSafe.hpp
 # Cleaning old files before new make
 clean:
 	$(RM) $(TARGET) *.o *~ "#"* core.*

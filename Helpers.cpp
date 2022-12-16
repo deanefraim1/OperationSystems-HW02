@@ -4,6 +4,7 @@
 
 extern Bank *bank;
 extern LogManager *logManager;
+extern vector<ATM> *ATMs;
 
 void Helpers::EndProgramWithPERROR(string errorMessage)
 {

@@ -19,6 +19,7 @@ using namespace std;
 
 Bank *bank;
 LogManager *logManager;
+int numberOfATMsRunning = 0;
 
 int main(int argc, char* argv[])
 {
