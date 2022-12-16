@@ -22,7 +22,7 @@ ATM::ATM(ifstream& ATMFile)
         operations.push_back(currentOperation);
         command.clear();
     }
-    pthread_create(&(thread), NULL, ATM::RunATM, this);
+    pthread_create(&(ATMRunThread), NULL, ATM::RunATM, this);
 }
 
 ATM::~ATM()

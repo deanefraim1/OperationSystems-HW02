@@ -1,5 +1,4 @@
 #include "LogManager.hpp"
-#include "Bank.hpp"
 #include "Helpers.hpp"
 
 extern Bank *bank;

@@ -16,7 +16,7 @@ public:
 
     vector<Operation> operations;
     int currentCommandIndex;
-    pthread_t thread;
+    pthread_t ATMRunThread;
     int id;
 
     ATM(ifstream& ATMFile);

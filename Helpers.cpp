@@ -1,5 +1,4 @@
 #include "Helpers.hpp"
-#include "Bank.hpp"
 #include "LogManager.hpp"
 
 extern Bank *bank;
@@ -38,7 +37,7 @@ void Helpers::JoinAllATMsThreads(vector<ATM> ATMs)
 {
     for (size_t currentATMIndex = 0; currentATMIndex < ATMs.size(); currentATMIndex++)
     {
-        if(pthread_join(ATMs[currentATMIndex].thread, NULL) != 0)
+        if(pthread_join(ATMs[currentATMIndex].ATMRunThread, NULL) != 0)
         {
             EndProgramWithPERROR("Bank error: pthread_join failed\n");
         }
