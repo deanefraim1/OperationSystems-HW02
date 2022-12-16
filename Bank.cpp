@@ -4,8 +4,6 @@
 #include <string>
 #include <unistd.h>
 
-#define NOT_FOUND -1
-
 Bank::Bank()
 {
     pthread_create(&thread, NULL, Bank::RunBank, this);
