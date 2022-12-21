@@ -13,8 +13,10 @@ extern LogManager *logManager;
 
 using namespace std;
 
-ATM::ATM(ifstream& ATMFile)
+ATM::ATM(ifstream& ATMFile, int ATMID)
 {
+    this->id = ATMID;
+    this->currentCommandIndex = 0;
     string command;
     while(getline(ATMFile, command))
     {
@@ -27,7 +29,7 @@ ATM::ATM(ifstream& ATMFile)
 
 ATM::~ATM()
 {
-    pthread_exit(NULL);
+    
 }
 
 void* ATM::RunATM(void* ATMToRunAsVoid)
@@ -39,7 +41,7 @@ void* ATM::RunATM(void* ATMToRunAsVoid)
         ATMToRun->RunOperation(currentOperationIndex);
         usleep(100000);
     }
-
+    pthread_exit(NULL);
     return NULL;
 }
 

@@ -19,5 +19,5 @@ Helpers.o: Helpers.cpp Helpers.hpp LogManager.hpp ATM.hpp
 IThreadSafe.o: IThreadSafe.cpp IThreadSafe.hpp Helpers.hpp
 # Cleaning old files before new make
 clean:
-	$(RM) $(TARGET) *.o *~ "#"* core.*
+	$(RM) $(TARGET) *.o *~ "#"* core.* log.txt
 

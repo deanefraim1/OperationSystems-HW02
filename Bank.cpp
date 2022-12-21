@@ -17,8 +17,7 @@ Bank::Bank()
 
 Bank::~Bank()
 {
-    pthread_exit(&commissionThread);
-    pthread_exit(&statusThread);
+    
 }
 
 void *Bank::RunBankCommision(void *bankToRunAsVoid)
@@ -28,6 +27,7 @@ void *Bank::RunBankCommision(void *bankToRunAsVoid)
     {
         bankToRun->TakeCommissions();
     }
+    pthread_exit(NULL);
     return NULL;
 }
 
@@ -38,6 +38,7 @@ void *Bank::RunBankStatus(void *bankToRunAsVoid)
     {
         bankToRun->PrintStatus();
     }
+    pthread_exit(NULL);
     return NULL;
 }
 
