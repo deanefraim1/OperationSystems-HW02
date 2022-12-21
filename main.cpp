@@ -27,13 +27,13 @@ int main(int argc, char* argv[])
     
     bank = new Bank();
     logManager = new LogManager("log.txt");
-    vector<ATM>* ATMs = Helpers::InitializeATMsVector(argc, argv);
+    vector<ATM*>* ATMs = Helpers::InitializeATMsVector(argc, argv);
 
     Helpers::JoinAllATMsThreads(ATMs);
 
     delete logManager;
     delete bank;
-    delete ATMs;
+    Helpers::deleteATMsVector(ATMs);
     
     return 0;
 }

@@ -7,8 +7,9 @@ class IThreadSafe
 {
 public:
 
-    pthread_mutex_t mutex;
-    pthread_cond_t doneCondition;
+    pthread_mutex_t writerMutex;
+    pthread_mutex_t readersMutex;
+    pthread_mutex_t queueMutex;
     int readers;
 
     IThreadSafe();

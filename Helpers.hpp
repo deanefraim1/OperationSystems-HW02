@@ -13,8 +13,9 @@ class Helpers
 public:
     static void EndProgramWithPERROR(string errorMessage);
     static void EndProgramWithSTDERR(string errorMessage);
-    static vector<ATM>* InitializeATMsVector(int argc, char* argv[]);
-    static void JoinAllATMsThreads(vector<ATM>* ATMs);
+    static vector<ATM*>* InitializeATMsVector(int argc, char* argv[]);
+    static void deleteATMsVector(vector<ATM*>* ATMs);
+    static void JoinAllATMsThreads(vector<ATM*>* ATMs);
     static int GetATMIDFromFileName(string fileName);
 };
 
