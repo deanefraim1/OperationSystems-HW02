@@ -6,8 +6,8 @@ Operation::Operation(string command)
     string operationType = strtok(strdup(command.c_str()), strdup(delimiters.c_str()));
     int accountID = atoi(strtok(NULL, strdup(delimiters.c_str())));
     int accountPassword = atoi(strtok(NULL, strdup(delimiters.c_str())));
-    int amount;
-    int targetAccountID;
+    int amount = 0;
+    int targetAccountID = 0;
     if (operationType == "O")
     {
         amount = atoi(strtok(NULL, strdup(delimiters.c_str())));

@@ -19,7 +19,7 @@ public:
     pthread_t ATMRunThread;
     int id;
 
-    ATM(ifstream& ATMFile);
+    ATM(ifstream& ATMFile, int ATMID);
     ~ATM();
     static void *RunATM(void *ATMToRunAsVoid);
     void RunOperation(int operationIndex);
