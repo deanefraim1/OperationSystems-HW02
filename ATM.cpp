@@ -100,8 +100,8 @@ void ATM::DepositToAccount(int accountID, int accountPassword, int amountToDepos
             if(bank->accounts[currentAccountIndex].password == accountPassword)
             {
                 Account& accountToDepositTo = bank->accounts[currentAccountIndex];
-                bank->ExitReader();
                 accountToDepositTo.EnterWriter();
+                bank->ExitReader();
                 accountToDepositTo.balance += amountToDeposit;
                 logManager->PrintToLog(to_string(this->id) + ": Account " + to_string(accountID) + " new balance is " + to_string(bank->accounts[currentAccountIndex].balance) + " after " + to_string(amountToDeposit) + " $ was deposited");
                 accountToDepositTo.ExitWriter();
@@ -129,8 +129,8 @@ void ATM::WithdrawFromAccount(int accountID, int accountPassword, int amountToWi
             if(bank->accounts[currentAccountIndex].password == accountPassword)
             {
                 Account& accountToWithdrawFrom = bank->accounts[currentAccountIndex];
-                bank->ExitReader();
                 accountToWithdrawFrom.EnterWriter();
+                bank->ExitReader();
                 if(accountToWithdrawFrom.balance >= amountToWithdraw)
                 {
                     accountToWithdrawFrom.balance -= amountToWithdraw;
