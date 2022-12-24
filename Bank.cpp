@@ -23,7 +23,7 @@ Bank::~Bank()
 void *Bank::RunBankCommision(void *bankToRunAsVoid)
 {
     Bank *bankToRun = (Bank *) bankToRunAsVoid;
-    while(sleep(3))
+    while(sleep(3) == 0)
     {
         bankToRun->TakeCommissions();
     }
@@ -34,7 +34,7 @@ void *Bank::RunBankCommision(void *bankToRunAsVoid)
 void *Bank::RunBankStatus(void *bankToRunAsVoid)
 {
     Bank *bankToRun = (Bank *) bankToRunAsVoid;
-    while(usleep(500000))
+    while(usleep(500000) == 0) //0.5 seconds
     {
         bankToRun->PrintStatus();
     }
@@ -45,11 +45,10 @@ void *Bank::RunBankStatus(void *bankToRunAsVoid)
 void Bank::TakeCommissions()
 {
     EnterWriter();
-    int commissionInPrecentage;
+    float commissionInPrecentage = ((float)((rand() % 5) + 1)) / 100;
     int amoutToTake;
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
-        commissionInPrecentage = ((rand() % 5) + 1)/100;
         amoutToTake = accounts[currentAccount].balance * commissionInPrecentage;
         accounts[currentAccount].balance -= amoutToTake;
         this->balance += amoutToTake;
@@ -68,5 +67,16 @@ void Bank::PrintStatus()
     {
         cout << "Account " + to_string(accounts[currentAccount].id) + ": Balance – " + to_string(accounts[currentAccount].balance) + "$, Account Password – " + to_string(accounts[currentAccount].password) << endl;
     }
+    cout << "The bank has " + to_string(this->balance) + "$" << endl;
     ExitReader();
+}
+
+int Bank::getAccountIndexFromAccountID(int accountID)//helper function, not thread safe
+{
+    for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
+    {
+        if(accounts[currentAccount].id == accountID)
+            return currentAccount;
+    }
+    return -1;
 }

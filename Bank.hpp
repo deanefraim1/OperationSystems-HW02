@@ -21,6 +21,7 @@ public:
     static void *RunBankStatus(void *bankToRunAsVoid);
     void TakeCommissions();
     void PrintStatus();
+    int getAccountIndexFromAccountID(int accountID);
 };
 
 #endif
