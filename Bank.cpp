@@ -49,10 +49,12 @@ void Bank::TakeCommissions()
     int amoutToTake;
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
+        accounts[currentAccount].EnterWriter();
         amoutToTake = accounts[currentAccount].balance * commissionInPrecentage;
         accounts[currentAccount].balance -= amoutToTake;
         this->balance += amoutToTake;
         logManager->PrintToLog("Bank: commissions of " + to_string(commissionInPrecentage) + "% were charged, the bank gained " + to_string(amoutToTake) + "$ from account " + to_string(accounts[currentAccount].id));
+        accounts[currentAccount].ExitWriter();
     }
     ExitWriter();
 }
