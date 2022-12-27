@@ -24,7 +24,7 @@ ATM::ATM(ifstream& ATMFile, int ATMID)
         operations.push_back(currentOperation);
         command.clear();
     }
-    pthread_create(&(ATMRunThread), NULL, ATM::RunATM, this);
+    pthread_create(&ATMRunThread, NULL, ATM::RunATM, this);
 }
 
 ATM::~ATM()
