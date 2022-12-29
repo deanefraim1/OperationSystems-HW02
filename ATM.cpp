@@ -74,7 +74,7 @@ void ATM::RunOperation(int operationIndex)
 void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalance)
 {
     bank->EnterWriter();
-    int accountIndexToInsertTo = bank->FindIndexToInsertAccount(accountID);
+    int accountIndexToInsertTo = bank->FindIndexToInsertAccountSorted(accountID);
     if(accountIndexToInsertTo == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account with the same id exists");

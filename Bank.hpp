@@ -22,7 +22,7 @@ public:
     void TakeCommissions();
     void PrintStatus();
     int GetAccountIndexFromAccountID(int accountID);
-    int FindIndexToInsertAccount(int accountID);
+    int FindIndexToInsertAccountSorted(int accountID);
 };
 
 #endif

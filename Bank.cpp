@@ -83,7 +83,7 @@ int Bank::GetAccountIndexFromAccountID(int accountID)//helper function, not thre
     return -1;
 }
 
-int Bank::FindIndexToInsertAccount(int accountID)//helper function, not thread safe
+int Bank::FindIndexToInsertAccountSorted(int accountID)//helper function, not thread safe
 {
     for (size_t currentAccountIndex = 0; currentAccountIndex < accounts.size(); currentAccountIndex++)
     {
