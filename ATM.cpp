@@ -74,7 +74,8 @@ void ATM::RunOperation(int operationIndex)
 void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalance)
 {
     bank->EnterWriter();
-    if(bank->getAccountIndexFromAccountID(accountID) != -1)
+    int accountIndexToInsertTo = bank->FindIndexToInsertAccount(accountID);
+    if(accountIndexToInsertTo == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account with the same id exists");
         bank->ExitWriter();
@@ -83,7 +84,7 @@ void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalanc
     else 
     {
         Account accountToAdd(accountID, accountPassword, initialBalance);   
-        bank->accounts.push_back(accountToAdd);
+        bank->accounts.insert(bank->accounts.begin() + accountIndexToInsertTo, accountToAdd);
         logManager->PrintToLog(to_string(this->id) + ": New account id is " + to_string(accountToAdd.id) + " with password " + to_string(accountToAdd.password) + " and initial balance " + to_string(accountToAdd.balance));
         bank->ExitWriter();
         return;
@@ -93,7 +94,7 @@ void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalanc
 void ATM::DepositToAccount(int accountID, int accountPassword, int amountToDeposit)
 {
     bank->EnterReader();
-    int accountIndexToDepositeTo = bank->getAccountIndexFromAccountID(accountID);
+    int accountIndexToDepositeTo = bank->GetAccountIndexFromAccountID(accountID);
     if(accountIndexToDepositeTo == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
@@ -121,7 +122,7 @@ void ATM::DepositToAccount(int accountID, int accountPassword, int amountToDepos
 void ATM::WithdrawFromAccount(int accountID, int accountPassword, int amountToWithdraw)
 {
     bank->EnterReader();
-    int accountIndexToWithdrawFrom = bank->getAccountIndexFromAccountID(accountID);
+    int accountIndexToWithdrawFrom = bank->GetAccountIndexFromAccountID(accountID);
     if(accountIndexToWithdrawFrom == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
@@ -158,7 +159,7 @@ void ATM::WithdrawFromAccount(int accountID, int accountPassword, int amountToWi
 void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accountIDToTransferTo, int amountToTransfer)
 {
     bank->EnterReader();
-    int accountIndexToTransferFrom = bank->getAccountIndexFromAccountID(accountID);
+    int accountIndexToTransferFrom = bank->GetAccountIndexFromAccountID(accountID);
     if(accountIndexToTransferFrom == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
@@ -174,7 +175,7 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
     }
     else
     {
-        int accountIndexToTransferTo = bank->getAccountIndexFromAccountID(accountIDToTransferTo);
+        int accountIndexToTransferTo = bank->GetAccountIndexFromAccountID(accountIDToTransferTo);
         if(accountIndexToTransferTo == -1)
         {
             logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountIDToTransferTo) + " does not exist");
@@ -210,7 +211,7 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
 void ATM::BalanceInquiry(int accountID, int accountPassword)
 {
     bank->EnterReader();
-    int accountIndexToInquire = bank->getAccountIndexFromAccountID(accountID);
+    int accountIndexToInquire = bank->GetAccountIndexFromAccountID(accountID);
     if(accountIndexToInquire == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
@@ -237,7 +238,7 @@ void ATM::BalanceInquiry(int accountID, int accountPassword)
 void ATM::CloseAccount(int accountID, int accountPassword)
 {
     bank->EnterWriter();
-    int accountIndexToClose = bank->getAccountIndexFromAccountID(accountID);
+    int accountIndexToClose = bank->GetAccountIndexFromAccountID(accountID);
     if(accountIndexToClose == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");

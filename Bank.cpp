@@ -73,7 +73,7 @@ void Bank::PrintStatus()
     ExitReader();
 }
 
-int Bank::getAccountIndexFromAccountID(int accountID)//helper function, not thread safe
+int Bank::GetAccountIndexFromAccountID(int accountID)//helper function, not thread safe
 {
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
@@ -81,4 +81,17 @@ int Bank::getAccountIndexFromAccountID(int accountID)//helper function, not thre
             return currentAccount;
     }
     return -1;
+}
+
+int Bank::FindIndexToInsertAccount(int accountID)//helper function, not thread safe
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < accounts.size(); currentAccountIndex++)
+    {
+        if(accounts[currentAccountIndex].id > accountID)
+            return currentAccountIndex;
+
+        else if(accounts[currentAccountIndex].id == accountID)
+            return -1;
+    }
+    return accounts.size();
 }
