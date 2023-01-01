@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <string>
 #include <iostream>
+#include "Helpers.hpp"
 
 
 extern Bank *bank;
@@ -24,7 +25,9 @@ ATM::ATM(ifstream& ATMFile, int ATMID)
         operations.push_back(currentOperation);
         command.clear();
     }
-    pthread_create(&ATMRunThread, NULL, ATM::RunATM, this);
+    if(pthread_create(&ATMRunThread, NULL, ATM::RunATM, this) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_create failed\n");
+    
 }
 
 ATM::~ATM()

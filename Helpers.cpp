@@ -3,16 +3,23 @@
 
 extern Bank *bank;
 extern LogManager *logManager;
+extern vector<ATM *> *ATMs;
 
 void Helpers::EndProgramWithPERROR(string errorMessage)
 {
     perror(errorMessage.c_str());
+    delete logManager;
+    delete bank;
+    Helpers::deleteATMsVector();
     exit(EXIT_FAILURE);
 }
 
 void Helpers::EndProgramWithSTDERR(string errorMessage)
 {
     fprintf(stderr, "%s", errorMessage.c_str());
+    delete logManager;
+    delete bank;
+    Helpers::deleteATMsVector();
     exit(EXIT_FAILURE);
 }
 
@@ -34,7 +41,7 @@ vector<ATM*>* Helpers::InitializeATMsVector(int argc, char* argv[])
     return ATMs;
 }
 
-void Helpers::deleteATMsVector(vector<ATM*>* ATMs)
+void Helpers::deleteATMsVector()
 {
     for (size_t currentATMIndex = 0; currentATMIndex < ATMs->size(); currentATMIndex++)
     {

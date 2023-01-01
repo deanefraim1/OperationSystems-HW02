@@ -19,6 +19,7 @@ using namespace std;
 
 Bank *bank;
 LogManager *logManager;
+vector<ATM *> *ATMs;
 
 int main(int argc, char* argv[])
 {
@@ -27,13 +28,13 @@ int main(int argc, char* argv[])
     
     bank = new Bank();
     logManager = new LogManager("log.txt");
-    vector<ATM*>* ATMs = Helpers::InitializeATMsVector(argc, argv);
+    ATMs = Helpers::InitializeATMsVector(argc, argv);
 
     Helpers::JoinAllATMsThreads(ATMs);
 
     delete logManager;
     delete bank;
-    Helpers::deleteATMsVector(ATMs);
+    Helpers::deleteATMsVector();
     
     return 0;
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <unistd.h>
 #include <iostream>
+#include "Helpers.hpp"
 
 extern LogManager *logManager;
 
@@ -11,8 +12,11 @@ using namespace std;
 
 Bank::Bank()
 {
-    pthread_create(&commissionThread, NULL, Bank::RunBankCommision, this);
-    pthread_create(&statusThread, NULL, Bank::RunBankStatus, this);
+    if(pthread_create(&commissionThread, NULL, Bank::RunBankCommision, this))
+        Helpers::EndProgramWithPERROR("Bank error: failed to create commission thread");
+
+    if(pthread_create(&statusThread, NULL, Bank::RunBankStatus, this))
+        Helpers::EndProgramWithPERROR("Bank error: failed to create status thread");
 }
 
 Bank::~Bank()
@@ -45,15 +49,16 @@ void *Bank::RunBankStatus(void *bankToRunAsVoid)
 void Bank::TakeCommissions()
 {
     EnterWriter();
-    float commissionInPrecentage = ((float)((rand() % 5) + 1)) / 100;
+    int commisionInPercents = (rand() % 5) + 1;
+    float commission = ((float)(commisionInPercents)) / 100;
     int amoutToTake;
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
         accounts[currentAccount].EnterWriter();
-        amoutToTake = accounts[currentAccount].balance * commissionInPrecentage;
+        amoutToTake = accounts[currentAccount].balance * commission;
         accounts[currentAccount].balance -= amoutToTake;
         this->balance += amoutToTake;
-        logManager->PrintToLog("Bank: commissions of " + to_string(commissionInPrecentage) + "% were charged, the bank gained " + to_string(amoutToTake) + "$ from account " + to_string(accounts[currentAccount].id));
+        logManager->PrintToLog("Bank: commissions of " + to_string(commisionInPercents) + "% were charged, the bank gained " + to_string(amoutToTake) + "$ from account " + to_string(accounts[currentAccount].id));
         accounts[currentAccount].ExitWriter();
     }
     ExitWriter();
