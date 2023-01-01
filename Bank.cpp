@@ -44,7 +44,6 @@ void *Bank::RunBankStatus(void *bankToRunAsVoid)
 void Bank::TakeCommissions()
 {
     EnterWriter();
-    srand(time(NULL)); //random seed
     int commisionInPercents = (rand() % 5) + 1;
     float commission = ((float)(commisionInPercents)) / 100;
     int amoutToTake;

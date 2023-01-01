@@ -23,6 +23,7 @@ vector<ATM *> *ATMs;
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL)); //random seed
     if(argc < 2)
         Helpers::EndProgramWithSTDERR("Bank error: illegal arguments\n");
     
