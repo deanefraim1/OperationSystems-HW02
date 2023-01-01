@@ -16,7 +16,6 @@ public:
     pthread_t statusThread;
 
     Bank();
-    ~Bank();
     static void *RunBankCommision(void *bankToRunAsVoid);
     static void *RunBankStatus(void *bankToRunAsVoid);
     void TakeCommissions();

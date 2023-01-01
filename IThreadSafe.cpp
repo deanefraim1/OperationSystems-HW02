@@ -17,46 +17,61 @@ IThreadSafe::IThreadSafe()
 
 IThreadSafe::~IThreadSafe()
 {
-    pthread_mutex_destroy(&writerMutex);
-    pthread_mutex_destroy(&readersMutex);
-    pthread_mutex_destroy(&queueMutex);
+    if(pthread_mutex_destroy(&writerMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed\n");
+    if(pthread_mutex_destroy(&readersMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed\n");
+    if(pthread_mutex_destroy(&queueMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed\n");
 }
 
 
 void IThreadSafe::EnterReader()
 {
-    pthread_mutex_lock(&queueMutex);
-    pthread_mutex_lock(&readersMutex);
+    if(pthread_mutex_lock(&queueMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_lock failed\n");
+    if(pthread_mutex_lock(&readersMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_lock failed\n");
 
     if (readers == 0) 
-        pthread_mutex_lock(&writerMutex);
+        if(pthread_mutex_lock(&writerMutex) != 0)
+            Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_lock failed\n");
 
     readers++;
 
-    pthread_mutex_unlock(&queueMutex);
-    pthread_mutex_unlock(&readersMutex);
+    if(pthread_mutex_unlock(&queueMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_unlock failed\n");
+    if(pthread_mutex_unlock(&readersMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_unlock failed\n");
 }
 
 void IThreadSafe::ExitReader()
 {
-    pthread_mutex_lock(&readersMutex);
+    if(pthread_mutex_lock(&readersMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_lock failed\n");
 
     readers--;
 
     if (readers == 0) 
-        pthread_mutex_unlock(&writerMutex);
+        if(pthread_mutex_unlock(&writerMutex) != 0)
+            Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_unlock failed\n");
     
-    pthread_mutex_unlock(&readersMutex);
+    if(pthread_mutex_unlock(&readersMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_unlock failed\n");
 }
 
 void IThreadSafe::EnterWriter()
 {
-    pthread_mutex_lock(&queueMutex);
-    pthread_mutex_lock(&writerMutex);
-    pthread_mutex_unlock(&queueMutex);
+    if(pthread_mutex_lock(&queueMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_lock failed\n");
+    if(pthread_mutex_lock(&writerMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_lock failed\n");
+    if(pthread_mutex_unlock(&queueMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_unlock failed\n");
 }
 
 void IThreadSafe::ExitWriter()
 {
-    pthread_mutex_unlock(&writerMutex);
+    if(pthread_mutex_unlock(&writerMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_unlock failed\n");
 }

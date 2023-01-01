@@ -19,11 +19,6 @@ Bank::Bank()
         Helpers::EndProgramWithPERROR("Bank error: failed to create status thread");
 }
 
-Bank::~Bank()
-{
-    
-}
-
 void *Bank::RunBankCommision(void *bankToRunAsVoid)
 {
     Bank *bankToRun = (Bank *) bankToRunAsVoid;

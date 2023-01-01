@@ -30,11 +30,6 @@ ATM::ATM(ifstream& ATMFile, int ATMID)
     
 }
 
-ATM::~ATM()
-{
-    
-}
-
 void* ATM::RunATM(void* ATMToRunAsVoid)
 {
     ATM *ATMToRun = (ATM *)ATMToRunAsVoid;
