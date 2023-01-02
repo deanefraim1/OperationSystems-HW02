@@ -7,19 +7,19 @@ extern vector<ATM *> *ATMs;
 
 void Helpers::EndProgramWithPERROR(string errorMessage)
 {
+    printf("\033[2J"); //clear screen
+    printf("\033[1;1H");//moves cursor to beginning of screen
+    fflush(stdout);
     perror(errorMessage.c_str());
-    delete logManager;
-    delete bank;
-    Helpers::deleteATMsVector();
     exit(EXIT_FAILURE);
 }
 
 void Helpers::EndProgramWithSTDERR(string errorMessage)
 {
+    printf("\033[2J"); //clear screen
+    printf("\033[1;1H");//moves cursor to beginning of screen
+    fflush(stdout);
     fprintf(stderr, "%s", errorMessage.c_str());
-    delete logManager;
-    delete bank;
-    Helpers::deleteATMsVector();
     exit(EXIT_FAILURE);
 }
 
@@ -43,6 +43,8 @@ vector<ATM*>* Helpers::InitializeATMsVector(int argc, char* argv[])
 
 void Helpers::deleteATMsVector()
 {
+    if(ATMs == NULL)
+        return;
     for (size_t currentATMIndex = 0; currentATMIndex < ATMs->size(); currentATMIndex++)
     {
         delete (*ATMs)[currentATMIndex];

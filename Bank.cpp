@@ -33,10 +33,10 @@ void *Bank::RunBankCommision(void *bankToRunAsVoid)
 void *Bank::RunBankStatus(void *bankToRunAsVoid)
 {
     Bank *bankToRun = (Bank *) bankToRunAsVoid;
-    while(usleep(500000) == 0) //0.5 seconds
+    do//0.5 seconds
     {
         bankToRun->PrintStatus();
-    }
+    } while (usleep(500000) == 0);
     pthread_exit(NULL);
     return NULL;
 }
@@ -63,7 +63,9 @@ void Bank::PrintStatus()
 {
     EnterReader();
     printf("\033[2J"); //clear screen
+    fflush(stdout);
     printf("\033[1;1H");//moves cursor to beginning of screen
+    fflush(stdout);
     cout << "Current Bank Status" << endl;
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
