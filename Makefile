@@ -1,6 +1,6 @@
 # Makefile for the bank program
 CXX = g++
-CXXFLAGS = -g -Wall -std=c++11
+CXXFLAGS = -Wall -Werror -pedantic-errors -DNDEBUG -pthread
 CXXLINK = $(CXX)
 OBJS = main.o Bank.o ATM.o LogManager.o Account.o Operation.o Helpers.o IThreadSafe.o
 TARGET = bank
