@@ -20,6 +20,4 @@ public:
     void ExitWriter();
 };
 
-
-
 #endif

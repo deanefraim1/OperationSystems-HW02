@@ -3,15 +3,22 @@
 
 extern Bank *bank;
 extern LogManager *logManager;
+extern vector<ATM *> *ATMs;
 
 void Helpers::EndProgramWithPERROR(string errorMessage)
 {
+    printf("\033[2J"); //clear screen
+    printf("\033[1;1H");//moves cursor to beginning of screen
+    fflush(stdout);
     perror(errorMessage.c_str());
     exit(EXIT_FAILURE);
 }
 
 void Helpers::EndProgramWithSTDERR(string errorMessage)
 {
+    printf("\033[2J"); //clear screen
+    printf("\033[1;1H");//moves cursor to beginning of screen
+    fflush(stdout);
     fprintf(stderr, "%s", errorMessage.c_str());
     exit(EXIT_FAILURE);
 }
@@ -34,8 +41,10 @@ vector<ATM*>* Helpers::InitializeATMsVector(int argc, char* argv[])
     return ATMs;
 }
 
-void Helpers::deleteATMsVector(vector<ATM*>* ATMs)
+void Helpers::deleteATMs()
 {
+    if(ATMs == NULL)
+        return;
     for (size_t currentATMIndex = 0; currentATMIndex < ATMs->size(); currentATMIndex++)
     {
         delete (*ATMs)[currentATMIndex];
@@ -72,4 +81,20 @@ int Helpers::GetATMIDFromFileName(string fileName)
         }
     }
     return ATMID;
+}
+
+void Helpers::EnterReaderAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->EnterReader();
+    }
+}
+
+void Helpers::ExitReaderAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->ExitReader();
+    }
 }

@@ -19,21 +19,23 @@ using namespace std;
 
 Bank *bank;
 LogManager *logManager;
+vector<ATM *> *ATMs;
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL)); //random seed
     if(argc < 2)
         Helpers::EndProgramWithSTDERR("Bank error: illegal arguments\n");
     
     bank = new Bank();
     logManager = new LogManager("log.txt");
-    vector<ATM*>* ATMs = Helpers::InitializeATMsVector(argc, argv);
+    ATMs = Helpers::InitializeATMsVector(argc, argv);
 
     Helpers::JoinAllATMsThreads(ATMs);
 
-    delete logManager;
     delete bank;
-    Helpers::deleteATMsVector(ATMs);
-    
+    delete logManager;
+    Helpers::deleteATMs();
+
     return 0;
 }

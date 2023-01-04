@@ -11,7 +11,8 @@ class Bank : public IThreadSafe
 {
 public:
     int balance;
-    vector<Account> accounts;
+    vector<Account*> accounts;
+    pthread_mutex_t transferFunctionMutex;
     pthread_t commissionThread;
     pthread_t statusThread;
 
@@ -21,7 +22,8 @@ public:
     static void *RunBankStatus(void *bankToRunAsVoid);
     void TakeCommissions();
     void PrintStatus();
-    int getAccountIndexFromAccountID(int accountID);
+    int GetAccountIndexFromAccountID(int accountID);
+    int FindIndexToInsertAccountSorted(int accountID);
 };
 
 #endif
