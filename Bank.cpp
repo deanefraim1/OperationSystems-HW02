@@ -12,11 +12,24 @@ using namespace std;
 
 Bank::Bank()
 {
-    if(pthread_create(&commissionThread, NULL, Bank::RunBankCommision, this))
-        Helpers::EndProgramWithPERROR("Bank error: failed to create commission thread");
+    balance = 0;
+    if(pthread_mutex_init(&transferFunctionMutex, NULL) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_init failed");
 
-    if(pthread_create(&statusThread, NULL, Bank::RunBankStatus, this))
-        Helpers::EndProgramWithPERROR("Bank error: failed to create status thread");
+    if(pthread_create(&commissionThread, NULL, Bank::RunBankCommision, this) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_create failed");
+
+    if(pthread_create(&statusThread, NULL, Bank::RunBankStatus, this) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_create failed");
+}
+
+Bank::~Bank()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < accounts.size(); currentAccountIndex++)
+        delete accounts[currentAccountIndex];
+
+    if(pthread_mutex_destroy(&transferFunctionMutex) != 0)
+        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed");
 }
 
 void *Bank::RunBankCommision(void *bankToRunAsVoid)
@@ -49,12 +62,12 @@ void Bank::TakeCommissions()
     int amoutToTake;
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
-        accounts[currentAccount].EnterWriter();
-        amoutToTake = accounts[currentAccount].balance * commission;
-        accounts[currentAccount].balance -= amoutToTake;
+        accounts[currentAccount]->EnterWriter();
+        amoutToTake = accounts[currentAccount]->balance * commission;
+        accounts[currentAccount]->balance -= amoutToTake;
         this->balance += amoutToTake;
-        logManager->PrintToLog("Bank: commissions of " + to_string(commisionInPercents) + "% were charged, the bank gained " + to_string(amoutToTake) + "$ from account " + to_string(accounts[currentAccount].id));
-        accounts[currentAccount].ExitWriter();
+        logManager->PrintToLog("Bank: commissions of " + to_string(commisionInPercents) + "% were charged, the bank gained " + to_string(amoutToTake) + "$ from account " + to_string(accounts[currentAccount]->id));
+        accounts[currentAccount]->ExitWriter();
     }
     ExitWriter();
 }
@@ -62,16 +75,17 @@ void Bank::TakeCommissions()
 void Bank::PrintStatus()
 {
     EnterReader();
+    Helpers::EnterReaderAllAccounts();
     printf("\033[2J"); //clear screen
-    fflush(stdout);
     printf("\033[1;1H");//moves cursor to beginning of screen
     fflush(stdout);
     cout << "Current Bank Status" << endl;
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
-        cout << "Account " + to_string(accounts[currentAccount].id) + ": Balance – " + to_string(accounts[currentAccount].balance) + "$, Account Password – " + to_string(accounts[currentAccount].password) << endl;
+        cout << "Account " + to_string(accounts[currentAccount]->id) + ": Balance - " + to_string(accounts[currentAccount]->balance) + "$, Account Password - " + to_string(accounts[currentAccount]->password) << endl;
     }
     cout << "The bank has " + to_string(this->balance) + "$" << endl;
+    Helpers::ExitReaderAllAccounts();
     ExitReader();
 }
 
@@ -79,7 +93,7 @@ int Bank::GetAccountIndexFromAccountID(int accountID)//helper function, not thre
 {
     for (size_t currentAccount = 0; currentAccount < accounts.size(); currentAccount++)
     {
-        if(accounts[currentAccount].id == accountID)
+        if(accounts[currentAccount]->id == accountID)
             return currentAccount;
     }
     return -1;
@@ -89,10 +103,10 @@ int Bank::FindIndexToInsertAccountSorted(int accountID)//helper function, not th
 {
     for (size_t currentAccountIndex = 0; currentAccountIndex < accounts.size(); currentAccountIndex++)
     {
-        if(accounts[currentAccountIndex].id > accountID)
+        if(accounts[currentAccountIndex]->id > accountID)
             return currentAccountIndex;
 
-        else if(accounts[currentAccountIndex].id == accountID)
+        else if(accounts[currentAccountIndex]->id == accountID)
             return -1;
     }
     return accounts.size();

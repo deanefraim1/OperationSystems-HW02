@@ -10,7 +10,7 @@ public:
 
     int balance;
     int id;
-    int password;
+    int password;  
 
     Account(int id, int password, int initialBalance);
 };

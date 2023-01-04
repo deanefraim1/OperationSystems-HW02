@@ -33,9 +33,9 @@ int main(int argc, char* argv[])
 
     Helpers::JoinAllATMsThreads(ATMs);
 
-    delete logManager;
     delete bank;
-    Helpers::deleteATMsVector();
-    
+    delete logManager;
+    Helpers::deleteATMs();
+
     return 0;
 }

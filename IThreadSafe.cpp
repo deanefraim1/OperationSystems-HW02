@@ -19,8 +19,10 @@ IThreadSafe::~IThreadSafe()
 {
     if(pthread_mutex_destroy(&writerMutex) != 0)
         Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed\n");
+
     if(pthread_mutex_destroy(&readersMutex) != 0)
         Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed\n");
+        
     if(pthread_mutex_destroy(&queueMutex) != 0)
         Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed\n");
 }

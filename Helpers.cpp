@@ -41,7 +41,7 @@ vector<ATM*>* Helpers::InitializeATMsVector(int argc, char* argv[])
     return ATMs;
 }
 
-void Helpers::deleteATMsVector()
+void Helpers::deleteATMs()
 {
     if(ATMs == NULL)
         return;
@@ -81,4 +81,20 @@ int Helpers::GetATMIDFromFileName(string fileName)
         }
     }
     return ATMID;
+}
+
+void Helpers::EnterReaderAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->EnterReader();
+    }
+}
+
+void Helpers::ExitReaderAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->ExitReader();
+    }
 }
