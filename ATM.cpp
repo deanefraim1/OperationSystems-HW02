@@ -76,6 +76,7 @@ void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalanc
     if(accountIndexToInsertTo == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account with the same id exists");
+        sleep(1);
         bank->ExitWriter();
         return;
     }
@@ -84,6 +85,7 @@ void ATM::AddAccountToBank(int accountID, int accountPassword, int initialBalanc
         Account* accountToAdd = new Account(accountID, accountPassword, initialBalance);   
         bank->accounts.insert(bank->accounts.begin() + accountIndexToInsertTo, accountToAdd);
         logManager->PrintToLog(to_string(this->id) + ": New account id is " + to_string(accountToAdd->id) + " with password " + to_string(accountToAdd->password) + " and initial balance " + to_string(accountToAdd->balance));
+        sleep(1);
         bank->ExitWriter();
         return;
     }
@@ -96,6 +98,7 @@ void ATM::DepositToAccount(int accountID, int accountPassword, int amountToDepos
     if(accountIndexToDepositeTo == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
+        sleep(1);
         bank->ExitReader();
         return;
     }
@@ -103,12 +106,14 @@ void ATM::DepositToAccount(int accountID, int accountPassword, int amountToDepos
     if(accountToDepositTo->password != accountPassword)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - password for account id " + to_string(accountID) + " is incorrect");
+        sleep(1);
         bank->ExitReader();
         return;
     }
     else
     {
         accountToDepositTo->EnterWriter();
+        sleep(1);
         bank->ExitReader();
         accountToDepositTo->balance += amountToDeposit;
         logManager->PrintToLog(to_string(this->id) + ": Account " + to_string(accountToDepositTo->id) + " new balance is " + to_string(accountToDepositTo->balance) + " after " + to_string(amountToDeposit) + " $ was deposited");
@@ -124,6 +129,7 @@ void ATM::WithdrawFromAccount(int accountID, int accountPassword, int amountToWi
     if(accountIndexToWithdrawFrom == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
+        sleep(1);
         bank->ExitReader();
         return;
     }
@@ -131,12 +137,14 @@ void ATM::WithdrawFromAccount(int accountID, int accountPassword, int amountToWi
     if(accountToWithdrawFrom->password != accountPassword)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - password for account id " + to_string(accountID) + " is incorrect");
+        sleep(1);
         bank->ExitReader();
         return;
     }
     else
     {
         accountToWithdrawFrom->EnterWriter();
+        sleep(1);
         bank->ExitReader();
         if(accountToWithdrawFrom->balance < amountToWithdraw)
         {
@@ -161,6 +169,7 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
     if(accountIndexToTransferFrom == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
+        sleep(1);
         bank->ExitReader();
         return;
     }
@@ -168,6 +177,7 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
     if(accountToTransferFrom->password != accountPassword)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - password for account id " + to_string(accountID) + " is incorrect");
+        sleep(1);
         bank->ExitReader();
         return;
     }
@@ -177,6 +187,7 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
         if(accountIndexToTransferTo == -1)
         {
             logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountIDToTransferTo) + " does not exist");
+            sleep(1);
             bank->ExitReader();
             return;
         }
@@ -184,6 +195,7 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
         {
             Account* accountToTransferTo = bank->accounts[accountIndexToTransferTo];
             Helpers::EnterWritersSorted(accountToTransferFrom, accountToTransferTo); // to prevent deadlock in case of two ATMs trying to transfer between the same two accounts A->B and B->A
+            sleep(1);
             bank->ExitReader();
             if(accountToTransferFrom->balance < amountToTransfer)
             {
@@ -212,6 +224,7 @@ void ATM::BalanceInquiry(int accountID, int accountPassword)
     if(accountIndexToInquire == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
+        sleep(1);
         bank->ExitReader();
         return;
     }
@@ -219,12 +232,14 @@ void ATM::BalanceInquiry(int accountID, int accountPassword)
     if(accountToInquire->password != accountPassword)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - password for account id " + to_string(accountID) + " is incorrect");
+        sleep(1);
         bank->ExitReader();
         return;
     }
     else
     {
         accountToInquire->EnterReader();
+        sleep(1);
         bank->ExitReader();
         logManager->PrintToLog(to_string(this->id) + ": Account " + to_string(accountToInquire->id) + " balance is " + to_string(accountToInquire->balance));
         accountToInquire->ExitReader();
@@ -239,6 +254,7 @@ void ATM::CloseAccount(int accountID, int accountPassword)
     if(accountIndexToClose == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
+        sleep(1);
         bank->ExitWriter();
         return;
     }
@@ -246,6 +262,7 @@ void ATM::CloseAccount(int accountID, int accountPassword)
     if(accountToClose->password != accountPassword)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - password for account id " + to_string(accountID) + " is incorrect");
+        sleep(1);
         bank->ExitWriter();
         return;
     }
@@ -253,6 +270,7 @@ void ATM::CloseAccount(int accountID, int accountPassword)
     {
         // to make sure no one is reading or writing to the account
         accountToClose->EnterWriter();
+        sleep(1);
         accountToClose->ExitWriter();
 
         bank->accounts.erase(bank->accounts.begin() + accountIndexToClose);
