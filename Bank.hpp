@@ -12,7 +12,6 @@ class Bank : public IThreadSafe
 public:
     int balance;
     vector<Account*> accounts;
-    pthread_mutex_t transferFunctionMutex;
     pthread_t commissionThread;
     pthread_t statusThread;
 

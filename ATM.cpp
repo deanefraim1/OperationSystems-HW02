@@ -156,14 +156,12 @@ void ATM::WithdrawFromAccount(int accountID, int accountPassword, int amountToWi
 
 void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accountIDToTransferTo, int amountToTransfer)
 {
-    pthread_mutex_lock(&bank->transferFunctionMutex); // to prevent deadlock in case of two ATMs trying to transfer between the same two accounts A->B and B->A
     bank->EnterReader();
     int accountIndexToTransferFrom = bank->GetAccountIndexFromAccountID(accountID);
     if(accountIndexToTransferFrom == -1)
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " does not exist");
         bank->ExitReader();
-        pthread_mutex_unlock(&bank->transferFunctionMutex);
         return;
     }
     Account* accountToTransferFrom = bank->accounts[accountIndexToTransferFrom];
@@ -171,7 +169,6 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
     {
         logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - password for account id " + to_string(accountID) + " is incorrect");
         bank->ExitReader();
-        pthread_mutex_unlock(&bank->transferFunctionMutex);
         return;
     }
     else
@@ -181,21 +178,18 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
         {
             logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountIDToTransferTo) + " does not exist");
             bank->ExitReader();
-            pthread_mutex_unlock(&bank->transferFunctionMutex);
             return;
         }
         else
         {
             Account* accountToTransferTo = bank->accounts[accountIndexToTransferTo];
-            accountToTransferFrom->EnterWriter();
-            accountToTransferTo->EnterWriter();
+            Helpers::EnterWritersSorted(accountToTransferFrom, accountToTransferTo); // to prevent deadlock in case of two ATMs trying to transfer between the same two accounts A->B and B->A
             bank->ExitReader();
             if(accountToTransferFrom->balance < amountToTransfer)
             {
                 logManager->PrintToLog("Error " + to_string(this->id) + " : Your transaction failed - account " + to_string(accountID) + " balance is lower than " + to_string(amountToTransfer));
                 accountToTransferFrom->ExitWriter();
                 accountToTransferTo->ExitWriter();
-                pthread_mutex_unlock(&bank->transferFunctionMutex);
                 return;
             }
             else
@@ -205,7 +199,6 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
                 logManager->PrintToLog(to_string(this->id) + ": Account " + to_string(accountToTransferFrom->id) + " new balance is " + to_string(accountToTransferFrom->balance) + " after " + to_string(amountToTransfer) + " $ was transferred to account " + to_string(accountToTransferTo->id));
                 accountToTransferFrom->ExitWriter();
                 accountToTransferTo->ExitWriter();
-                pthread_mutex_unlock(&bank->transferFunctionMutex);
                 return;
             }
         }

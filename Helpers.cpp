@@ -83,6 +83,20 @@ int Helpers::GetATMIDFromFileName(string fileName)
     return ATMID;
 }
 
+void Helpers::EnterWritersSorted(Account* firstAccount, Account* secondAccount)
+{
+    if(firstAccount->id < secondAccount->id)
+    {
+        firstAccount->EnterWriter();
+        secondAccount->EnterWriter();
+    }
+    else
+    {
+        secondAccount->EnterWriter();
+        firstAccount->EnterWriter();
+    }
+}
+
 void Helpers::EnterReaderAllAccounts()
 {
     for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)

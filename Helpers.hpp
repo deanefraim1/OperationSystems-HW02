@@ -18,6 +18,7 @@ public:
     static void JoinAllATMsThreads(vector<ATM*>* ATMs);
     static int GetATMIDFromFileName(string fileName);
     static void ExitProgramWithPERROR(string errorMessage);
+    static void EnterWritersSorted(Account* firstAccount, Account* secondAccount);
     static void EnterReaderAllAccounts();
     static void ExitReaderAllAccounts();
 };

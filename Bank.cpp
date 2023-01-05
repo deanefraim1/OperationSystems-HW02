@@ -13,8 +13,6 @@ using namespace std;
 Bank::Bank()
 {
     balance = 0;
-    if(pthread_mutex_init(&transferFunctionMutex, NULL) != 0)
-        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_init failed");
 
     if(pthread_create(&commissionThread, NULL, Bank::RunBankCommision, this) != 0)
         Helpers::EndProgramWithPERROR("Bank error: pthread_create failed");
@@ -27,9 +25,6 @@ Bank::~Bank()
 {
     for (size_t currentAccountIndex = 0; currentAccountIndex < accounts.size(); currentAccountIndex++)
         delete accounts[currentAccountIndex];
-
-    if(pthread_mutex_destroy(&transferFunctionMutex) != 0)
-        Helpers::EndProgramWithPERROR("Bank error: pthread_mutex_destroy failed");
 }
 
 void *Bank::RunBankCommision(void *bankToRunAsVoid)
