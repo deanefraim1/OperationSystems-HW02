@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <iostream>
 #include "Helpers.hpp"
+#include <pthread.h>
 
 extern LogManager *logManager;
 
