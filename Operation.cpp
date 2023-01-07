@@ -1,5 +1,7 @@
 #include "Operation.hpp"
 
+#include <cstring>
+
 Operation::Operation(string command)
 {
     string delimiters = " \t\n";
