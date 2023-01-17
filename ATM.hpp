@@ -8,7 +8,7 @@
 #include "Bank.hpp"
 #include "Account.hpp"
 
-using namespace std;//asdasd
+using namespace std;
 
 class ATM
 {
