@@ -274,8 +274,8 @@ void ATM::CloseAccount(int accountID, int accountPassword)
         accountToClose->ExitWriter();
 
         bank->accounts.erase(bank->accounts.begin() + accountIndexToClose);
-        delete accountToClose;
         logManager->PrintToLog(to_string(this->id) + ": Account " + to_string(accountToClose->id) + " is closed");
+        delete accountToClose;
         bank->ExitWriter();
         return;
     }

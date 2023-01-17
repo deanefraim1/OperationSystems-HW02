@@ -29,12 +29,11 @@ vector<ATM*>* Helpers::InitializeATMsVector(int argc, char* argv[])
     for (int currentATMIndex = 1; currentATMIndex < argc; currentATMIndex++)
     {
         ifstream currentATMFile(argv[currentATMIndex]);
-        int ATMID = GetATMIDFromFileName(argv[currentATMIndex]);
         if(!currentATMFile.is_open())
         {
             EndProgramWithSTDERR("Bank error: illegal arguments\n");
         }
-        ATM *currentATM = new ATM(currentATMFile, ATMID);
+        ATM *currentATM = new ATM(currentATMFile, currentATMIndex);
         ATMs->push_back(currentATM);
         currentATMFile.close();
     }
@@ -63,26 +62,6 @@ void Helpers::JoinAllATMsThreads(vector<ATM*>* ATMs)
     }
 }
 
-int Helpers::GetATMIDFromFileName(string fileName)
-{
-    int ATMID = 0;
-    bool foundNumber = false;
-    for (size_t currentCharIndex = 0; currentCharIndex < fileName.length(); currentCharIndex++)
-    {
-        if((fileName[currentCharIndex] >= '0') && (fileName[currentCharIndex] <= '9'))
-        {
-            foundNumber = true;
-            ATMID = ATMID * 10 + (fileName[currentCharIndex] - '0');
-        }
-
-        else if(foundNumber)
-        {
-            break;
-        }
-    }
-    return ATMID;
-}
-
 void Helpers::EnterWritersSorted(Account* firstAccount, Account* secondAccount)
 {
     if(firstAccount->id < secondAccount->id)
@@ -105,10 +84,26 @@ void Helpers::EnterReaderAllAccounts()
     }
 }
 
+void Helpers::EnterWriterAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->EnterWriter();
+    }
+}
+
 void Helpers::ExitReaderAllAccounts()
 {
     for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
     {
         bank->accounts[currentAccountIndex]->ExitReader();
+    }
+}
+
+void Helpers::ExitWriterAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->ExitWriter();
     }
 }
