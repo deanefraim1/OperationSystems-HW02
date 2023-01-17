@@ -20,7 +20,9 @@ public:
     static void ExitProgramWithPERROR(string errorMessage);
     static void EnterWritersSorted(Account* firstAccount, Account* secondAccount);
     static void EnterReaderAllAccounts();
+    static void EnterWriterAllAccounts();
     static void ExitReaderAllAccounts();
+    static void ExitWriterAllAccounts();
 };
 
 #endif

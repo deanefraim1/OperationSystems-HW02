@@ -105,10 +105,26 @@ void Helpers::EnterReaderAllAccounts()
     }
 }
 
+void Helpers::EnterWriterAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->EnterWriter();
+    }
+}
+
 void Helpers::ExitReaderAllAccounts()
 {
     for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
     {
         bank->accounts[currentAccountIndex]->ExitReader();
+    }
+}
+
+void Helpers::ExitWriterAllAccounts()
+{
+    for (size_t currentAccountIndex = 0; currentAccountIndex < bank->accounts.size(); currentAccountIndex++)
+    {
+        bank->accounts[currentAccountIndex]->ExitWriter();
     }
 }

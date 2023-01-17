@@ -52,7 +52,7 @@ void *Bank::RunBankStatus(void *bankToRunAsVoid)
 
 void Bank::TakeCommissions()
 {
-    EnterWriter();
+    EnterReader();
     int commisionInPercents = (rand() % 5) + 1;
     float commission = ((float)(commisionInPercents)) / 100;
     int amoutToTake;
@@ -65,7 +65,7 @@ void Bank::TakeCommissions()
         logManager->PrintToLog("Bank: commissions of " + to_string(commisionInPercents) + "% were charged, the bank gained " + to_string(amoutToTake) + "$ from account " + to_string(accounts[currentAccount]->id));
         accounts[currentAccount]->ExitWriter();
     }
-    ExitWriter();
+    ExitReader();
 }
 
 void Bank::PrintStatus()
