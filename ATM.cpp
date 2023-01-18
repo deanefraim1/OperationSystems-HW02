@@ -208,7 +208,7 @@ void ATM::TransferBetweenAccounts(int accountID, int accountPassword, int accoun
             {
                 accountToTransferFrom->balance -= amountToTransfer;
                 accountToTransferTo->balance += amountToTransfer;
-                logManager->PrintToLog(to_string(this->id) + ": Account " + to_string(accountToTransferFrom->id) + " new balance is " + to_string(accountToTransferFrom->balance) + " after " + to_string(amountToTransfer) + " $ was transferred to account " + to_string(accountToTransferTo->id));
+                logManager->PrintToLog(to_string(this->id) + ": Transfer " + to_string(amountToTransfer) + " from account " + to_string(accountToTransferFrom->id) + " to account " + to_string(accountToTransferTo->id) + " new account balance is " + to_string(accountToTransferFrom->balance) + " new target account balance is " + to_string(accountToTransferTo->balance));
                 accountToTransferFrom->ExitWriter();
                 accountToTransferTo->ExitWriter();
                 return;
